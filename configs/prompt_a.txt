@@ -1,0 +1,4 @@
+Extract the following from this customer support email: intent, urgency, product, requested_action. Reply with JSON only.
+
+Email:
+{email}

@@ -1,0 +1,16 @@
+Extract structured fields from the customer support email below.
+
+Rules:
+- intent: exactly one of refund_request, cancellation, technical_issue, billing_dispute, feature_request, account_access, order_status, general_inquiry. If several apply, pick the one describing what the customer primarily wants handled.
+- urgency: low, medium, or high. Judge by stated or implied time pressure and business impact, not by tone — an angry email about a typo is low; a polite email about a dead storefront is high.
+- product: exactly one of PulseBoard, Streamline CRM, Nimbus Backup, Quanta Analytics, Relay Mail, Vantage POS, Orbit Scheduler, Cascade Forms — or null if no product is identifiable. Normalize misspellings to the closest catalog name. If multiple products appear, choose the one the request is mainly about.
+- requested_action: one short phrase stating what the customer wants done, including any deadline they gave.
+
+Reply with a single JSON object, no code fences, no commentary.
+
+Example:
+Email: "Our Quanta Analytics dashboard won't load and the board meets at 9am tomorrow."
+{"intent": "technical_issue", "urgency": "high", "product": "Quanta Analytics", "requested_action": "fix dashboard loading before 9am board meeting"}
+
+Email:
+{email}

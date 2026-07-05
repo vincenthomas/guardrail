@@ -1,0 +1,31 @@
+# Experiment configs. A is the incumbent ("control"), B the candidate.
+configs:
+  A:
+    model: claude-haiku-4-5-20251001
+    prompt: configs/prompt_a.txt
+    temperature: 0.0
+    max_tokens: 300
+  B:
+    model: claude-haiku-4-5-20251001
+    prompt: configs/prompt_b.txt
+    temperature: 0.0
+    max_tokens: 300
+
+judge:
+  model: claude-sonnet-5
+  temperature: 0.0
+
+# $/MTok — verify against current pricing before trusting cost numbers.
+pricing:
+  claude-haiku-4-5-20251001: {input: 1.00, output: 5.00}
+  claude-sonnet-5: {input: 3.00, output: 15.00}
+
+# Launch criteria, experimentation-program style: a candidate ships only if
+# the primary metric improves AND no guardrail regresses past its threshold.
+gate:
+  primary: field_accuracy          # mean over intent/urgency/product exact + action judge score
+  min_primary_lift: 0.0            # candidate must not lose
+  guardrails:
+    format_failure_rate: {max_abs_increase: 0.02}
+    cost_per_1k_usd: {max_pct_increase: 50}
+    latency_p95_ms: {max_pct_increase: 25}
